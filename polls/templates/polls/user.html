@@ -1,0 +1,68 @@
+{% load staticfiles %}
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">      
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="{% static 'polls/css/materialize.min.css' %}" type="text/css" />
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>           
+<script src="{% static 'polls/js/materialize.min.js' %}"> </script>
+<script type="text/javascript">
+    $(document).ready(function() {
+    var frm = $('#love');
+    var btn = $('#submit');
+        btn.click(function (ev){
+                        ev.preventDefault();
+                        $.ajax({
+                                type       : "POST",
+                                url        : "/polls/user_detail/", 
+                                data       :  frm.serialize(), 
+                                dataType    : 'json', 
+                                success      : function(data) { 
+                                                    window.location.href = data.redirect; }
+                    });
+        });
+    });
+</script>
+</head>
+<body>
+<div class="row">
+<form class="col s12"  id='love' action="{% url 'polls:user_detail' %}" method="post">
+{% csrf_token %}
+<div class="row">
+<div class="input-field col s4">
+<input  id="first_name" type="text" class="validate" name="first_name">
+<label for="first_name">First Name</label>
+</div>
+<div class = "input-field col s4">
+<input  id="middle_name" type="text" class = "validate" name="middle_name">
+<label for="middle_name">Middle Name</label>
+</div>
+<div class="input-field col s4">
+<input  id="last_name" type="text" class="validate" name = "last_name">
+<label for="last_name">Last Name</label>
+</div>
+</div>
+<div class="row">
+<div class="input-field col s12">
+<input id="age" type="number" class="validate" name="age">
+<label for="age">Age</label>
+</div>
+</div>
+<div class="row">
+<div class="input-field col s12"><br>
+<input id="dob" type="date" class="datepicker" name="dob"><br>
+<label for="dob" >DOB</label>
+</div>
+</div>
+<p>
+<input type="checkbox" id="maritalstatus">
+<label for="maritalstatus">Marital Status</label>
+</p>
+<button class="btn waves-effect waves-light" id='submit' type="submit" value="Submit">Submit
+<i class="material-icons right">send</i>
+</button>
+</div>
+</form>
+</div>
+</body>
+</html>

@@ -1,0 +1,56 @@
+{% load staticfiles %}
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">      
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="{% static 'polls/css/materialize.min.css' %}" type="text/css" />
+<link rel="stylesheet" type="text/css" href="{% static 'polls/css/style.css' %}" />
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>           
+<script src="{% static 'polls/js/materialize.min.js' %}"> </script>
+<script type="text/javascript">
+    $(document).ready(function() {
+    $('.test_class').click(function(ev){
+    					ev.preventDefault();
+    					var id =  $(this).attr("data-questionid");
+    					var frm = $( '[data-formname="' + id + '"]' );
+                        $.ajax({
+                                type       : "POST",
+                                url        : "http://localhost:8000/polls/" + id + "/vote/" + 'message' + "/", 
+                                data       :  frm.serialize(), 
+                                dataType    : 'json', 
+                                success      : function(data) { 
+                                                window.location.href = data.redirect; }
+                    });
+        });
+    });
+</script>
+</head>
+<body>
+{% if latest_question_list %}     
+<ul>
+{% for question in latest_question_list %}
+<li>  {{ question.question_text }} <br>
+{% if error_message %}<p><strong>{{error_message}}</strong></p> {% endif %}
+<div class="row">
+<form  class="column s12" id='love' method="post" data-formname = "{{question.id}}">
+{% csrf_token %}
+{% for choice in question.choice_set.all %}
+<input type="radio" name="choice" id="choice{{ choice.id }}" value="{{ choice.id }}" />
+<label for="choice{{ choice.id }}">{{ choice.choice_text }}</label><br />
+{% endfor %}
+<button class='btn waves-effect waves-light test_class' id='submit' type="submit" value="Submit" data-questionid="{{question.id}}">Submit
+<i class="material-icons right">send</i>
+</button>
+</form>
+</div>
+</li>
+{% endfor %}
+</ul>
+{% else %}
+<p>No polls are available.</p>
+{% endif %}
+<a href = "{% url 'polls:add_question' %}"> Add_Question </a> <br><br>
+<a href ="{% url 'polls:user_detail' %}"> Get Detail </a><br><br>
+<a href ="{% url 'polls:log_out' %}"> Click To LogOut</a>
+</body>
+</html>

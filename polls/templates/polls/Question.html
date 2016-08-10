@@ -1,0 +1,68 @@
+{% load staticfiles %}
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">      
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="{% static 'polls/css/materialize.min.css' %}" type="text/css" />
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>           
+<script src="{% static 'polls/js/materialize.min.js' %}"> </script>
+<script type="text/javascript">
+    $(document).ready(function() {
+    var frm = $('#love');
+    var btn = $('#submit');
+        btn.click(function (ev){
+                        ev.preventDefault();
+                        $.ajax({
+                                type       : "POST",
+                                url        : "/polls/add_question/", 
+                                data       :  frm.serialize(), 
+                                dataType    : 'json', 
+                                success      : function(data) { 
+                                                    window.location.href = data.redirect; }
+                    });
+        });
+    });
+</script>
+</head>
+<body>
+<div class="row">
+<form id='love' class = 'col s12' method='post'>
+{% csrf_token %}
+<div class="row">
+<div class ="input-field column s12">
+<input id="Your_Question" type="text" class="validate" name="Your_Question">
+<label for="Your_Question">Your_Question</label>
+</div>
+</div>
+<div class="row">
+<div class ="input-field column s4">
+<input id="Your_Choice1" type="text" class="validate" name="Choice_1">
+<label for="Your_Choice1">Your_Choice1</label>
+</div>
+<div class="input-field column s4">
+<input id="Your_Choice2" type="text" class="validate" name="Choice_2">
+<label for="Your_Choice2">Your_Choice2</label>
+</div>
+<div class="input-field column s4">
+<input id="Your_Choice3" type="text" class="validate" name="Choice_3">
+<label for="Your_Choice3">Your_Choice3</label>
+</div>
+</div>
+<div class="row">
+<div class="input-field column s6">
+<input id="Your_Choice4" type="text" class="validate" name="Choice_4">
+<label for="Your_Choice4">Your_Choice4</label>
+</div>
+<div class="input-field column s6">
+<input id="Your_Choice5" type="text" class="validate" name="Choice_5">
+<label for="Your_Choice5">Your_Choice5</label>
+</div>
+</div>
+<button class="btn waves-effect waves-light" id='submit' type="submit" value="Submit">Submit
+<i class="material-icons right">send</i>
+</button>
+</div>
+</form>
+</div>
+</body>
+</html>

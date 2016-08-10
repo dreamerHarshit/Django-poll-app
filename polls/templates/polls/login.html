@@ -1,0 +1,50 @@
+{% load staticfiles %}
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">      
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="{% static 'polls/css/materialize.min.css' %}" type="text/css" />
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>           
+<script src="{% static 'polls/js/materialize.min.js' %}"> </script>
+<script type="text/javascript">
+    $(document).ready(function() {
+    var frm = $('#love');
+    var btn = $('#submit');
+        btn.click(function (ev){
+                        ev.preventDefault();
+                        $.ajax({
+                                type       : "POST",
+                                url        : "/polls/login_id/", 
+                                data       :  frm.serialize(), 
+                                dataType    : 'json', 
+                                success      : function(data) { 
+                                                    window.location.href = data.redirect; }
+                    });
+        });
+    });
+</script>
+</head>
+<body>
+<h1 align="center" color="red"><u>This is a Login Form</u></h1>
+<div class = "row">
+<form class="column s12" id= 'love' action="{% url 'polls:login_id' %}" method="post">
+    {% csrf_token %}
+    <div class="row">
+    <div class= "input-field column s6">
+    <input  id="user_name" type="text" class="validate" name="user_name">
+    <label for="user_name">User_name</label>
+    </div>
+    <div class="input-field column s6">
+    <input id="pass_word" type="password" class="validate" name="pass_word">
+    <label for="pass_word">Pass_Word</label>
+    </div>
+    </div>
+    <button class="btn waves-effect waves-light" id='submit' type="submit" value="Submit">Submit
+    <i class="material-icons right">send</i>
+    </button>
+    </form>
+</div>
+<a href="{% url 'polls:sign_up' %}"> New User </a>
+</body>
+</html>
+

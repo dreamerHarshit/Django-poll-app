@@ -1,0 +1,18 @@
+[
+{
+	"names":"Rishabh Agrawal",
+	"Age":"21"
+},
+{
+	"names":"Aman Gupta",
+	"Age": "22"
+},
+{
+	"names":"Nakul Varshney",
+	"Age": "22"
+},
+{
+	"names":"Simran Jain",
+	"Age":"23"
+}
+]
